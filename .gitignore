@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Temp
+tmp/
+temp/
