@@ -196,6 +196,39 @@ This is shorthand for: *In which cognitive mode should the runtime operate, and 
 
 ---
 
+### Mediation
+
+**Purpose:** Contextualize tensions around the enactment of generated or existing artifacts. Produce contextual positions, not verdicts.
+
+**Required reading before activation:** `mediation/FOUNDATIONS.md`.
+
+**Behavior:**
+- Operate transversally to the canonical pipeline; never replace it
+- Activate only on explicit operator request; never self-trigger
+- Identify tensions present in an artifact under a given context
+- Interpret those tensions through the active policy
+- Propose a contextual position, or surface that human mediation is required
+- Produce rationale as primary output; any score is auxiliary
+
+**Constraints:**
+- Mediation does not supersede artifact authorship. It contextualizes tensions around enactment.
+- Mediation stabilizes contextual positions, not universal truths.
+- Stabilization is provisional, contextual, and revisable through new tensions, precedents, or reframing.
+- Mediation does not produce approvals or rejections. It produces traceable positions.
+- Mediation is proposal-first and human-mediated for stabilization.
+
+**Artifacts:**
+- Tension reports
+- Contextual positions with rationale
+- Mediation requests (when human arbitration is needed)
+- Precedents (only after human resolution)
+
+**Example prompt:**
+> "Mediate the contextual acceptability of this new module against the startup-mvp policy."
+> Response: Activate Mediation mode. Detect tensions. Interpret them through startup-mvp policy. Propose a position or surface ambiguity for human mediation. Do not approve, reject, or modify the artifact.
+
+---
+
 ## Mode Transitions
 
 Modes are not isolated. A typical lifecycle might be:

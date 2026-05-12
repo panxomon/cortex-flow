@@ -220,6 +220,17 @@ Located in `.ai/skills/`:
 | `adr-writer.md` | Write ADRs for consequential decisions |
 | `flow-mapper.md` | Map functional behavior definitions |
 | `oas-diff-analyzer.md` | Analyze OpenAPI diff changes |
+| `tension-detector.md` | Identify tensions present in an artifact under context (Mediation) |
+| `policy-interpreter.md` | Produce contextual rationale and candidate positions (Mediation) |
+| `context-arbitrator.md` | Arbitrate capacity of proposition vs human mediation required (Mediation) |
+
+### Mediation subsystem
+
+The skills marked `(Mediation)` belong to the contextual Mediation subsystem. They operate transversally to the canonical pipeline and are governed by a separate foundational document.
+
+**Required reading before invoking any Mediation skill:** `mediation/FOUNDATIONS.md`.
+
+**Constraint:** Skills in the Mediation subsystem MUST NOT be interpreted independently from `mediation/FOUNDATIONS.md` and the runtime constraints declared in the Mediation runtime mode. Partial reading of these skills causes semantic drift away from the subsystem's intent.
 
 ### Workflows
 
