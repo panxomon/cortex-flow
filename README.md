@@ -1,8 +1,8 @@
 # CortexFlow
 
-> **Transforma ambigüedad en flows ejecutables.**
+> Transforma ambigüedad en flows ejecutables — antes de que el modelo improvise por ti.
 
-CortexFlow es un framework de **context engineering** y **orquestación cognitiva**. No genera prompts improvisacionales: estructura intención declarativa, reduce ambigüedad antes de ejecutar, y produce artefactos verificables en lugar de respuestas desechables.
+CortexFlow es un **protocolo de context engineering para LLMs**. No es un binario, no es una librería, no es un runtime. Es un conjunto de convenciones en Markdown que el modelo lee y obedece: estructura intención, baja la ambigüedad antes de ejecutar, y deja artefactos verificables en tu repo.
 
 ```
 Context → Stories → Flows → ADRs → Outputs
@@ -10,68 +10,97 @@ Context → Stories → Flows → ADRs → Outputs
 
 ---
 
-## Cómo se usa 🇨🇱
+## El problema que resuelve
 
-1. 📁 **Pégale la carpeta** `cortex-flow/` a tu proyecto — puro copy-paste, hermano
-2. 🤖 **Dile a tu modelo** (Claude, GPT, lo que tengai) que lea `cortex-flow/START_HERE.md`
-3. 💬 **Te va a salir con el famoso**: *"¿Qué flow querí hoy?"* — elegí o descríbele lo que necesitai
-4. 🍿 **Explicale la pega y siéntate a mirar**: el runtime estructura, te tinca las preguntas justas, y te deja los artefactos ordenaitos en tu repo
+Los LLMs generan rápido pero olvidan rápido. Pasan tres cosas seguido:
 
-> **Tip de caleta** 🧠: No te pongai a escribir prompts largos pa'l copi. Escribí contexto estructurado nomás. El framework se encarga del resto.
+- **Pides A, te entrega B** — porque "interpretó" sin preguntar.
+- **El output no se puede auditar** — quedó en el chat, no en el repo.
+- **La decisión clave no se registró** — y a la siguiente iteración nadie sabe por qué se hizo así.
 
----
+CortexFlow ataca eso con tres reglas duras:
 
-## ¿Por qué CortexFlow?
+1. **Toda ejecución parte de contexto estructurado.**
+2. **Todo output traza a una intención definida.**
+3. **Toda decisión trascendental queda como ADR en el repo.**
 
-Los sistemas de IA generan bien pero olvidan rápido. La brecha entre *"lo que el usuario quiso decir"* y *"lo que el sistema produjo"* es el problema de ambigüedad.
-
-CortexFlow lo trata como un desafío de **context engineering**, no de prompt engineering:
-
-- Toda ejecución comienza con **contexto estructurado**
-- Todo output traza de vuelta a **intención definida**
-- Toda decisión trascendental queda **capturada como ADR**
-
-> **Nunca ejecutes desde la ambigüedad.**
+> Nunca ejecutes desde la ambigüedad.
 
 ---
 
-## Pipeline Canónico
+## Cómo se usa (4 pasos)
+
+1. 📁 **Copia la carpeta `cortex-flow/`** a tu proyecto. Puro copy-paste, hermano.
+2. 🤖 **Dile a tu modelo** (Claude, GPT, lo que tengai) que lea `cortex-flow/START_HERE.md` y respete el protocolo.
+3. 💬 **Te va a preguntar:** *"¿Qué flow querí hoy?"*. Eligí modo (Discovery, Architecture, etc.) y describele la pega.
+4. 🍿 **Mira y revisa.** El modelo va a estructurar, preguntar lo justo, y dejar artefactos en `definitions/` y `docs/`.
+
+**Tip de caleta** 🧠: no escribas prompts largos. Escribí **contexto estructurado** en `definitions/context.md` y `definitions/objective.md`. El protocolo hace el resto.
+
+---
+
+## Cómo funciona por dentro
+
+CortexFlow es **documentación que actúa como sistema operativo del modelo**. Los archivos clave:
+
+| Archivo | Rol |
+|---|---|
+| `SYSTEM_PROMPT.md` | Reglas duras del agente |
+| `BOOTSTRAP.md` | Contrato de inicio (qué leer y en qué orden) |
+| `.ai/orchestrator.md` | Coordinación de skills y modos |
+| `.ai/skills/` | 10 prompts especializados invocables por nombre |
+| `.ai/templates/` | Plantillas Markdown rellenables |
+| `definitions/` | Memoria estructurada (context, objective, stories, epics, flows, ADRs, contratos) |
+| `docs/` | Evidencia operacional (analysis, contracts, dependencies, flows) |
+
+**Flujo real cuando lo activas:**
+
+1. El modelo lee `START_HERE → BOOTSTRAP → SYSTEM_PROMPT → orchestrator`.
+2. Verifica el **gate fundacional**: `definitions/context.md`, `definitions/objective.md`, al menos un epic.
+3. Si falta algo → activa **Discovery mode**, máx 3 preguntas, genera `problem-definition.md`.
+4. Si está todo → te pide elegir runtime mode + flow.
+5. Ejecuta dentro del modo seleccionado, deja artefactos donde corresponde.
+
+---
+
+## Pipeline canónico
 
 | Etapa | Propósito |
 |---|---|
-| **Context** | Ground truth del sistema. Input estructurado que define la realidad operacional. |
-| **Stories** | Intención cristalizada en forma narrativa. Puente entre ambigüedad y estructura. |
-| **Flows** | Rutas de ejecución declarativas. Unidades de orquestación reutilizables. |
-| **ADRs** | Architecture Decision Records. Razonamiento capturado para decisiones trascendentales. |
-| **Outputs** | Artefactos ejecutables derivados de intención estructurada. |
+| **Context** | Ground truth. Define la realidad operacional. |
+| **Stories** | Intención cristalizada como narrativa ejecutable. |
+| **Flows** | Rutas declarativas reutilizables. |
+| **ADRs** | Decisiones trascendentales capturadas con razonamiento. |
+| **Outputs** | Artefactos verificables en `docs/` o `definitions/`. |
 
 ---
 
-## Modos de Runtime
+## Runtime modes (9)
 
-CortexFlow opera en 8 modos cognitivos. El operador selecciona el modo explícitamente; el runtime nunca lo infiere.
-
-| Modo | Qué hace |
+| Modo | Para qué |
 |---|---|
-| **Discovery** | Explorar ambigüedad, estructurar incógnitas |
-| **Architecture** | Diseñar sistemas, evaluar tradeoffs, producir ADRs |
-| **Implementation** | Generar outputs ejecutables desde especificaciones estructuradas |
-| **Debugging** | Aislar causas de falla, proponer fixes mínimos |
-| **Documentation** | Producir docs reutilizables, capturar contexto |
-| **Analysis** | Evaluar sistemas, medir coherencia, detectar drift |
-| **Migration** | Transformar preservando intención y minimizando riesgo |
-| **Optimization** | Refinar flows, reducir redundancia |
+| **Discovery** | Estructurar lo desconocido |
+| **Architecture** | Diseñar, decidir, escribir ADRs |
+| **Implementation** | Construir desde spec |
+| **Debugging** | Aislar causa, fix mínimo |
+| **Documentation** | Producir docs reusables |
+| **Analysis** | Medir drift, evaluar coherencia |
+| **Migration** | Transformar sin romper |
+| **Optimization** | Refinar, simplificar |
+| **Mediation** | Mediar tensiones contextuales (ver sección Mediation) |
+
+Selección **explícita**. El modelo no infiere modo.
 
 ---
 
 ## Qué es un Flow
 
-Un Flow es la unidad operativa fundamental de CortexFlow. Es una representación declarativa y estructurada de intención que guía la ejecución cognitiva.
+Unidad operativa fundamental. Declarativa, no imperativa.
 
 ```yaml
 flow:
   name: api-contract-migration
-  goal: Migrar una API REST interna a OpenAPI 3.1 sin romper consumidores
+  goal: Migrar una API REST a OpenAPI 3.1 sin romper consumidores
   context: legacy-api-v2
   inputs:
     - documentación de endpoints existentes
@@ -95,38 +124,90 @@ flow:
     - definitions/adr/adr-001-api-migration.md
 ```
 
+Spec formal completa en [`cortex-flow/definitions/flow-definition.md`](cortex-flow/definitions/flow-definition.md). Ejemplo ejecutable en [`cortex-flow/examples/api-contract-migration.md`](cortex-flow/examples/api-contract-migration.md).
+
 ---
 
-## Estructura del Proyecto
+## Mediation (subsistema transversal)
 
-El framework completo vive en [`cortex-flow/`](cortex-flow/):
+Mediation **no es parte del pipeline canónico**. Es un eje separado para tratar **tensiones contextuales** sobre artefactos ya producidos.
+
+**Qué hace conceptualmente:**
+
+- Detecta tensiones (ej. *velocidad de entrega vs mantenibilidad*) en un artefacto bajo un contexto declarado.
+- Las interpreta a través de una **policy** activa (`startup-mvp`, `strict-system`, etc.).
+- Propone una **posición contextual** con racional, o levanta que se requiere **mediación humana**.
+
+**Qué NO hace:**
+
+- No aprueba ni rechaza.
+- No produce scores como output principal.
+- No reemplaza el juicio humano.
+- No se autoinvoca: requiere solicitud explícita del operador.
+
+**Estado actual:** *Phase 1 — Ontología*. Lo que existe hoy en `mediation/`:
+
+- `FOUNDATIONS.md` — constitución del subsistema (invariantes, vocabulario, failure modes).
+- 3 skills (`tension-detector`, `policy-interpreter`, `context-arbitrator`) como prompts.
+- Catálogos de tensions canónicas, dimensions, policies y resolutions.
+- Phases 2–4 (modelo semántico, runtime, memoria organizacional) están **pending**.
+
+Antes de invocar Mediation: leer [`cortex-flow/mediation/FOUNDATIONS.md`](cortex-flow/mediation/FOUNDATIONS.md). No es opcional — sin esa base, las skills hacen drift semántico.
+
+---
+
+## Estructura del repo
 
 ```
 cortex-flow/
-├── START_HERE.md          ← Empieza aquí
-├── BOOTSTRAP.md           ← Contrato de inicio
-├── SYSTEM_PROMPT.md       ← Runtime core
-├── AGENTS.md              ← Guidelines para agentes
+├── START_HERE.md              ← Empieza aquí
+├── BOOTSTRAP.md               ← Contrato de inicio
+├── SYSTEM_PROMPT.md           ← Reglas del agente
+├── AGENTS.md                  ← Guidelines extendidas
 ├── .ai/
-│   ├── orchestrator.md    ← Orquestador del pipeline
-│   ├── skills/            ← Habilidades invocables
-│   ├── templates/         ← Plantillas de artefactos
-│   └── workflows/         ← Workflows canónicos
+│   ├── orchestrator.md
+│   ├── skills/                10 skills invocables
+│   ├── templates/             6 plantillas
+│   └── workflows/             repo-analysis.md
 ├── definitions/
-│   ├── flow-definition.md      ← Estructura formal de un Flow
-│   ├── runtime-modes.md        ← Definición de modos
-│   ├── adr/                    ← Decisiones arquitectónicas
-│   ├── stories/                ← Intenciones cristalizadas
-│   ├── epics/                  ← Agrupaciones de stories
-│   ├── flows/                  ← Definiciones declarativas
-│   └── contracts/              ← Contratos fuente de verdad
+│   ├── flow-definition.md
+│   ├── runtime-modes.md
+│   ├── context.md             ← lo creas tú
+│   ├── objective.md           ← lo creas tú
+│   ├── adr/                   ← decisiones
+│   ├── stories/               ← intención cristalizada
+│   ├── epics/                 ← agrupación de stories
+│   ├── flows/                 ← definiciones declarativas
+│   └── contracts/             ← contratos fuente de verdad
 ├── docs/
-│   ├── analysis/           ← Reportes de evaluación
-│   ├── contracts/          ← Snapshots derivados
-│   ├── dependencies/       ← Mapas de dependencias
-│   └── flows/              ← Narrativas de ejecución
-└── examples/               ← Flows de referencia
+│   ├── analysis/              ← reportes, auditorías
+│   ├── contracts/             ← snapshots derivados
+│   ├── dependencies/
+│   └── flows/                 ← narrativa de ejecución
+├── mediation/                 ← subsistema de mediación contextual
+└── examples/
 ```
+
+---
+
+## Primeros pasos concretos
+
+1. Leer [`cortex-flow/START_HERE.md`](cortex-flow/START_HERE.md).
+2. Activar runtime: `BOOTSTRAP.md` → `SYSTEM_PROMPT.md` → `.ai/orchestrator.md`.
+3. Elegir idioma de periferia en `START_HERE.md` (`working_language: es | en | ...`).
+4. Crear `definitions/context.md` y `definitions/objective.md` desde los templates en `.ai/templates/`.
+5. Ejecutar tu primer flow.
+
+---
+
+## Principios operacionales
+
+- ✅ Nunca ejecutar desde ambigüedad.
+- ✅ Activar Discovery si falta contexto.
+- ✅ Máximo 3 preguntas por iteración en Discovery.
+- ✅ Todo output debe ser persistente y reusable.
+- ✅ Toda decisión importante = un ADR.
+- ✅ Core en inglés (system prompt, skills, templates). Periferia en tu idioma.
 
 ---
 
@@ -136,32 +217,18 @@ cortex-flow/
 |---|---|
 | **Sistema** | CortexFlow |
 | **Abreviatura** | CF |
-| **Runtime** | CortexFlow Runtime |
 | **Paradigma** | Flow-Spec Driven Development |
 | **Tagline** | *Transforma ambigüedad en flows ejecutables* |
-| **Core question** | ¿Qué flow quieres hoy? |
+| **Core question** | *¿Qué flow querí hoy?* |
 
 ---
 
-## Primeros pasos
+## Honestidad de scope
 
-1. Lee [`cortex-flow/START_HERE.md`](cortex-flow/START_HERE.md)
-2. Activa el runtime: `BOOTSTRAP.md` → `SYSTEM_PROMPT.md` → `.ai/orchestrator.md`
-3. Elige tu idioma de periferia en `START_HERE.md`
-4. Define tu `definitions/context.md` y `definitions/objective.md`
-5. Ejecuta tu primer flow
+CortexFlow es **un protocolo, no un motor**. La "ejecución" la hace el LLM que lee estos archivos y se autoimpone las reglas. No hay parser, no hay CLI, no hay validador automático. La disciplina la pone el modelo + el operador.
 
----
+Esto es deliberado: la propuesta de valor está en la **estructura discursiva compartida**, no en una máquina. Si querés capa ejecutable encima (linter de flows, validador de YAML, CLI de bootstrap), es trabajo futuro y aún no existe.
 
-## Principios operacionales
+Auditoría técnica completa del estado real del repo: [`cortex-flow/docs/analysis/audit-2026-05-13.md`](cortex-flow/docs/analysis/audit-2026-05-13.md).
 
-- ✅ Nunca ejecutar desde ambigüedad
-- ✅ Activar Discovery mode cuando falte contexto
-- ✅ Máximo 3 preguntas por iteración en Discovery
-- ✅ Todo output debe ser persistente y reusable
-- ✅ Toda decisión importante se registra como ADR
-- ✅ El runtime core es inglés; la periferia habla tu idioma
-
----
-
-*CortexFlow no añade complejidad por su propio bien. Añade estructura donde la estructura reduce riesgo, y permanece ligero donde la flexibilidad sirve al objetivo.*
+> Añade estructura donde la estructura reduce riesgo, y se mantiene liviano donde la flexibilidad sirve al objetivo.
