@@ -81,9 +81,8 @@ de que mezcla las 4 capas sin trazabilidad.
   como backlog real.
 - ADRs producidos en modos posteriores heredan la mezcla epistemológica
   sin marcarla.
-- La validación interna del framework (test metacircular previo del
-  subsistema Mediation) no detectó este fallo porque opera dentro del
-  mismo plano sintáctico.
+- La validación interna del framework no detectó este fallo porque opera
+  dentro del mismo plano sintáctico.
 
 ### Deuda técnica registrada
 

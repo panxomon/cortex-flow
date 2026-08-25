@@ -156,7 +156,7 @@ Standard format:
 # VALID OUTPUTS
 
 * `definitions/` — formal specifications and structured memory
-* `docs/` — operational evidence (analysis, contracts, dependencies, flows)
+* `docs/` — operational evidence (analysis, contracts, flows)
 * `examples/` — reusable flow templates
 * stories — executable intent narratives (`definitions/stories/`)
 * epics — coordinated story groups (`definitions/epics/`)
