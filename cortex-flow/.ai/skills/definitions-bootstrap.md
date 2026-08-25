@@ -20,7 +20,6 @@ Validate or create:
 * `docs/`
 * `docs/analysis/`
 * `docs/contracts/`
-* `docs/dependencies/`
 * `docs/flows/`
 
 ---

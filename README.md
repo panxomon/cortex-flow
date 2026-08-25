@@ -48,10 +48,10 @@ CortexFlow es **documentación que actúa como sistema operativo del modelo**. L
 | `SYSTEM_PROMPT.md` | Reglas duras del agente |
 | `BOOTSTRAP.md` | Contrato de inicio (qué leer y en qué orden) |
 | `.ai/orchestrator.md` | Coordinación de skills y modos |
-| `.ai/skills/` | 10 prompts especializados invocables por nombre |
+| `.ai/skills/` | 7 prompts especializados invocables por nombre |
 | `.ai/templates/` | Plantillas Markdown rellenables |
 | `definitions/` | Memoria estructurada (context, objective, stories, epics, flows, ADRs, contratos) |
-| `docs/` | Evidencia operacional (analysis, contracts, dependencies, flows) |
+| `docs/` | Evidencia operacional (analysis, contracts, flows) |
 
 **Flujo real cuando lo activas:**
 
@@ -75,7 +75,7 @@ CortexFlow es **documentación que actúa como sistema operativo del modelo**. L
 
 ---
 
-## Runtime modes (9)
+## Runtime modes (8)
 
 | Modo | Para qué |
 |---|---|
@@ -87,7 +87,6 @@ CortexFlow es **documentación que actúa como sistema operativo del modelo**. L
 | **Analysis** | Medir drift, evaluar coherencia |
 | **Migration** | Transformar sin romper |
 | **Optimization** | Refinar, simplificar |
-| **Mediation** | Mediar tensiones contextuales (ver sección Mediation) |
 
 Selección **explícita**. El modelo no infiere modo.
 
@@ -128,34 +127,6 @@ Spec formal completa en [`cortex-flow/definitions/flow-definition.md`](cortex-fl
 
 ---
 
-## Mediation (subsistema transversal)
-
-Mediation **no es parte del pipeline canónico**. Es un eje separado para tratar **tensiones contextuales** sobre artefactos ya producidos.
-
-**Qué hace conceptualmente:**
-
-- Detecta tensiones (ej. *velocidad de entrega vs mantenibilidad*) en un artefacto bajo un contexto declarado.
-- Las interpreta a través de una **policy** activa (`startup-mvp`, `strict-system`, etc.).
-- Propone una **posición contextual** con racional, o levanta que se requiere **mediación humana**.
-
-**Qué NO hace:**
-
-- No aprueba ni rechaza.
-- No produce scores como output principal.
-- No reemplaza el juicio humano.
-- No se autoinvoca: requiere solicitud explícita del operador.
-
-**Estado actual:** *Phase 1 — Ontología*. Lo que existe hoy en `mediation/`:
-
-- `FOUNDATIONS.md` — constitución del subsistema (invariantes, vocabulario, failure modes).
-- 3 skills (`tension-detector`, `policy-interpreter`, `context-arbitrator`) como prompts.
-- Catálogos de tensions canónicas, dimensions, policies y resolutions.
-- Phases 2–4 (modelo semántico, runtime, memoria organizacional) están **pending**.
-
-Antes de invocar Mediation: leer [`cortex-flow/mediation/FOUNDATIONS.md`](cortex-flow/mediation/FOUNDATIONS.md). No es opcional — sin esa base, las skills hacen drift semántico.
-
----
-
 ## Estructura del repo
 
 ```
@@ -166,7 +137,7 @@ cortex-flow/
 ├── AGENTS.md                  ← Guidelines extendidas
 ├── .ai/
 │   ├── orchestrator.md
-│   ├── skills/                10 skills invocables
+│   ├── skills/                7 skills invocables
 │   ├── templates/             6 plantillas
 │   └── workflows/             repo-analysis.md
 ├── definitions/
@@ -182,9 +153,7 @@ cortex-flow/
 ├── docs/
 │   ├── analysis/              ← reportes, auditorías
 │   ├── contracts/             ← snapshots derivados
-│   ├── dependencies/
 │   └── flows/                 ← narrativa de ejecución
-├── mediation/                 ← subsistema de mediación contextual
 └── examples/
 ```
 

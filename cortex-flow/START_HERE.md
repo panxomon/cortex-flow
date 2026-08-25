@@ -78,7 +78,7 @@ Si falta alguno, el runtime se detiene y activa Discovery mode. Templates en `.a
 # Outputs válidos
 
 * `definitions/` — memoria estructurada (intención)
-* `docs/` — evidencia operacional (analysis, contracts, dependencies, flows)
+* `docs/` — evidencia operacional (analysis, contracts, flows)
 * `examples/` — flows de referencia
 * stories, epics, ADRs, flows, contracts
 
